@@ -14,12 +14,12 @@ this interface will also target desktop (java with special care for Linux+Waylan
 
 It could target iOS, but I don't Apple...
 
-This app also requires a servere, this is a Ktor web server.  
+This app also requires a backend server, this is a Ktor web server.  
 
 ## Usage
 
 ### Main screen on admin
-The welcome screen just has a few shortcuts to different app features. Basically a "what do you need": There will be 6 tiles, scan QR, create link, 
+The welcome screen is just a few shortcuts to different app features. Basically a "what do you need": There will be 6 tiles, scan QR, create link, 
 manage live sessions, manage shares, upload directly, and an advanced admin stuff.  
 
 ### Route #1, shared links
@@ -33,6 +33,7 @@ First, the admin app logs in (just open the app, as it will remember auth tokens
 - open share or whether the uploaded files can be downloaded using the same link, or only the admin can download.
 
 Once the configs are set, a share button is on the bottom, pressing that will copy the link and display a QR code. There is a back button, pressing that will open a tab where the session can be edited.  
+The link should be shared with the source device. (sent on an instan messaging app like Matrix, or just copied over by hand)
 
 If a user uses the link, they can upload one or more files to the server. Once a file is uploaded, it will be displayed in the app. This file can also be downloaded.
 
