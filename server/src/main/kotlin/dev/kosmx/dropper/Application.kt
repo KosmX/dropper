@@ -1,9 +1,11 @@
 package dev.kosmx.dropper
 
+import dev.kosmx.dropper.auth.AdminAuthenticationPlugin
+import dev.kosmx.dropper.routing.admin.adminRouting
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.response.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
 
 fun main() {
@@ -11,10 +13,21 @@ fun main() {
         .start(wait = true)
 }
 
-fun Application.module() {
+private fun Application.module() {
+
     routing {
-        get("/") {
-            call.respondText("Ktor: ${Greeting().greet()}")
+
+        install(ContentNegotiation) {
+
+        }
+
+        route("/admin") {
+            install(AdminAuthenticationPlugin) {
+                withTokenVerify { call, token ->
+                    TODO("Use DB to verify client")
+                }
+            }
+            adminRouting()
         }
     }
 }
