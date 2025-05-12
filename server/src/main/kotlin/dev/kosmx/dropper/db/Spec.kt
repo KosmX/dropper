@@ -54,16 +54,20 @@ object AdminTable: Table("admin") {
 }
 
 
-object SessionTable: IdTable<UUID>("session") {
+object SessionTable: LongIdTable("session") {
     @OptIn(ExperimentalUuidApi::class)
-    override val id: Column<EntityID<UUID>> = uuid("key").entityId()
 
     /**
-     * 36 bytes long random secret.The key is its bcrypt "hash"
+     * It is the scan ID of the session.
      */
-    val secureString: Column<ByteArray> = binary("secure", length = 36)
+    val publicID: Column<ByteArray> = binary("secure").uniqueIndex()
 
-    val name: Column<String> = text("name")
+    /**
+     * Secret which secureString is derived from. The server may not know it.
+     */
+    val secretString: Column<ByteArray?> = binary("secret").nullable().default(null)
+
+    val name: Column<String?> = text("name").nullable().default(null)
 
     @OptIn(ExperimentalTime::class)
     val expirationDate: Column<Instant> = timestamp("expiration")
@@ -72,14 +76,12 @@ object SessionTable: IdTable<UUID>("session") {
     val uploadLimit: Column<Int> = integer("upload_limit")
 
     val overrideUpload: Column<Boolean> = bool("override_upload")
-
-    override val primaryKey: PrimaryKey = PrimaryKey(id)
 }
 
 object UploadTable: LongIdTable("upload") {
-    val uploadDate: Column<Instant> = timestamp("instant")
+    val uploadDate: Column<Long> = long("instant")
 
-    val uploaderSession:Column<EntityID<UUID>?> = optReference("session", SessionTable)
+    val uploaderSession:Column<EntityID<Long>?> = optReference("session", SessionTable)
 }
 
 object FileTable: IdTable<UUID>("file") {
@@ -90,8 +92,12 @@ object FileTable: IdTable<UUID>("file") {
         UUID.randomUUID()
     }.entityId()
 
+    val hash: Column<ByteArray> = binary("hash", length = 32)
+
     val filename: Column<String> = text("filename")
-    val fileDate: Column<Instant> = timestamp("timestamp")
+    val fileDate: Column<Long> = long("timestamp")
+
+    val fileSize: Column<Long> = long("size")
 
     /**
      * The uploader block. If that entry is deleted, all files must be also deleted.

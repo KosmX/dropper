@@ -5,20 +5,25 @@ import kotlinx.serialization.Serializable
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @Serializable
 data class ShareSession @OptIn(ExperimentalTime::class, ExperimentalUuidApi::class) constructor(
 
     /**
-     * Session public ID. This is displayed on QR code, and needed to do authentication
+     * Internal session identifier. Only for admin-device and server communication
      */
-    val id: Uuid,
+    val id: Long,
 
     /**
-     * Private session key, only shared if link share is used. This keeps QR based sessions secure. The server and upload knows it, but the QR does not include this.
+     * public session key, derived from [privateID], exact way of creating this is TBD, maybe RSA or module-lattice, or a simple SHA-256
      */
-    val sessionKey: String?,
+    val publicID: String,
+
+    /**
+     * Private session key, only shared if link share is used. This keeps QR based sessions secure. The uploader knows it, but the QR does not include this.
+     * Nullable, maybe even the server won't know it.
+     */
+    val privateID: String? = null,
 
     /**
      * Optional name of share.
@@ -55,12 +60,22 @@ data class ShareSession @OptIn(ExperimentalTime::class, ExperimentalUuidApi::cla
      */
     @OptIn(ExperimentalUuidApi::class, ExperimentalTime::class)
     fun copy(
-        id: Uuid = this.id,
-        sessionKey: String? = this.sessionKey,
+        id: Long = this.id,
+        publicID: String = this.publicID,
+        privateID: String? = this.privateID,
         name: String? = this.name,
         expirationDate: Instant, // no default, if this entry is not modified, the auto-generated copy should be used
         allowMultipleFiles: Boolean = this.allowMultipleFiles,
         uploadLimit: Int = this.uploadLimit,
         overrideReupload: Boolean = this.overrideReupload,
-    ) = this.copy(id, sessionKey, name, expirationDate.toString(), allowMultipleFiles, uploadLimit, overrideReupload)
+    ) = this.copy(
+        id,
+        publicID,
+        privateID,
+        name,
+        expirationDate.toString(),
+        allowMultipleFiles,
+        uploadLimit,
+        overrideReupload
+    )
 }
