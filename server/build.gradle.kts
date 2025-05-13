@@ -29,6 +29,9 @@ dependencies {
     implementation(libs.exposed.sqlite)
     implementation(libs.exposed.time)
 
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.core)
+
     //testImplementation(libs.ktor.server.tests)
     testImplementation(libs.kotlin.test.junit)
 }

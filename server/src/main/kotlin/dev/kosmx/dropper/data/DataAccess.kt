@@ -32,6 +32,8 @@ interface AdminAccess {
      * @return the newly created token
      */
     fun addAdminClient(name: String): String
+
+    fun deleteAdminClient(token: String): Boolean
 }
 
 /**
@@ -134,6 +136,11 @@ interface UploadAccess {
      * @return true if deleted
      */
     suspend fun deleteFile(id: Uuid): Boolean
+
+    /**
+     * @return a single file (if exists
+     */
+    suspend fun getFile(id: Uuid): FileEntry?
 
     /**
      * @return content of file with [id], null if not found

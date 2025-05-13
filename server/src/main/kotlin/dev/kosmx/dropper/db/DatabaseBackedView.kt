@@ -75,6 +75,10 @@ class DatabaseBackedView(
         }
     }
 
+    override fun deleteAdminClient(token: String): Boolean = transaction {
+        AdminTable.deleteWhere { AdminTable.id eq token } != 0
+    }
+
     @OptIn(ExperimentalEncodingApi::class)
     override fun getSessions(
         count: Int,
@@ -325,6 +329,20 @@ class DatabaseBackedView(
     }
 
     override suspend fun deleteFile(id: Uuid): Boolean = fsMutex.withLock { transaction { deleteFileTransaction(id.toJavaUuid()) } }
+
+    override suspend fun getFile(id: Uuid): FileEntry? = transaction {
+        FileTable.selectAll().where { FileTable.id eq id.toJavaUuid() }
+            .firstOrNull()
+            ?.let { result ->
+                FileEntry(
+                    name = result[FileTable.filename],
+                    fileDate = result[FileTable.fileDate],
+                    size = result[FileTable.fileSize],
+                    id = result[FileTable.id].value.toKotlinUuid(),
+                    hash = result[FileTable.hash],
+                )
+            }
+    }
 
     override suspend fun getFileContent(id: Uuid): InputStream? {
         TODO("Not yet implemented")
