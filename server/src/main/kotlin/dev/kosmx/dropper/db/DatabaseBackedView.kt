@@ -1,6 +1,7 @@
 package dev.kosmx.dropper.db
 
 import dev.kosmx.dropper.crypto.CryptoTool
+import dev.kosmx.dropper.data.Admin
 import dev.kosmx.dropper.data.DataAccess
 import dev.kosmx.dropper.data.FileEntry
 import dev.kosmx.dropper.data.ShareSession
@@ -59,10 +60,10 @@ class DatabaseBackedView(
         }
     }
 
-    override fun getAdminClientList(): List<Pair<String, String>> {
+    override fun getAdminClientList(): List<Admin> {
         return transaction {
             AdminTable.selectAll().map { row ->
-                row[AdminTable.id] to row[AdminTable.name]
+                Admin(token = row[AdminTable.id], name = row[AdminTable.name])
             }.toList()
         }
     }

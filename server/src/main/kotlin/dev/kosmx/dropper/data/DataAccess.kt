@@ -1,5 +1,6 @@
 package dev.kosmx.dropper.data
 
+import kotlinx.serialization.Serializable
 import java.io.File
 import java.io.InputStream
 import kotlin.uuid.ExperimentalUuidApi
@@ -10,6 +11,14 @@ import kotlin.uuid.Uuid
  * Aggregate all views into one interface
  */
 interface DataAccess: AdminAccess, SessionAccess, UploadAccess
+
+
+@Serializable
+data class Admin(
+    val name: String,
+    val token: String
+)
+
 
 /**
  * Operations with admin device tokens
@@ -24,7 +33,7 @@ interface AdminAccess {
     /**
      * list of admin clients
      */
-    fun getAdminClientList(): List<Pair<String, String>>
+    fun getAdminClientList(): List<Admin>
 
     /**
      * Adds a new admin client
