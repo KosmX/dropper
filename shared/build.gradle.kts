@@ -40,6 +40,8 @@ kotlin {
         commonMain.dependencies {
             // put your Multiplatform dependencies here
             implementation(libs.kotlinx.serialization)
+
+            implementation(libs.ktor.resources)
         }
     }
 }

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.ktor)
     application
+    alias(libs.plugins.serialization)
 }
 
 group = "dev.kosmx.dropper"
@@ -37,5 +38,5 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(24)
+    jvmToolchain(23)
 }

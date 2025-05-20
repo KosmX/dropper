@@ -1,4 +1,4 @@
-package dev.kosmx.dropper.routing.admin.types
+package dev.kosmx.dropper.resources
 
 import io.ktor.resources.Resource
 

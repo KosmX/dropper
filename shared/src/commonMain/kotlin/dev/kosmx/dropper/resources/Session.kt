@@ -1,6 +1,5 @@
-package dev.kosmx.dropper.routing.admin.types
+package dev.kosmx.dropper.resources
 
-import dev.kosmx.dropper.data.ShareSession
 import io.ktor.resources.Resource
 import io.ktor.util.decodeBase64Bytes
 

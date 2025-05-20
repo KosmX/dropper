@@ -2,6 +2,10 @@ package dev.kosmx.dropper.config
 
 import kotlinx.serialization.Serializable
 
+@Serializable
+data class Config(
+    val db: DatabaseAccess = DatabaseAccess()
+)
 
 @Serializable
 data class DatabaseAccess(

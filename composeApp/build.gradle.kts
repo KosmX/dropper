@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -43,10 +44,12 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
-        
+
+        // I may need to create a JVM main source-set for android+desktop
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -63,6 +66,15 @@ kotlin {
             implementation(project.dependencies.platform(libs.koin.bom))
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+
+            implementation(libs.kotlinx.serialization)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.content)
+            implementation(libs.ktor.client.auth)
+            implementation(libs.ktor.client.resources)
+            implementation(libs.ktor.server.json)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -99,6 +111,7 @@ android {
 }
 
 dependencies {
+    implementation("io.ktor:ktor-client-resources:3.1.3")
     debugImplementation(compose.uiTooling)
 }
 

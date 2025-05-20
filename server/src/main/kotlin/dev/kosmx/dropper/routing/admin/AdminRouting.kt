@@ -3,7 +3,21 @@ package dev.kosmx.dropper.routing.admin
 import dev.kosmx.dropper.data.Admin
 import dev.kosmx.dropper.data.DataAccess
 import dev.kosmx.dropper.data.ShareSession
-import dev.kosmx.dropper.routing.admin.types.*
+import dev.kosmx.dropper.resources.AdminAdd
+import dev.kosmx.dropper.resources.AdminDelete
+import dev.kosmx.dropper.resources.AdminList
+import dev.kosmx.dropper.resources.CreateSession
+import dev.kosmx.dropper.resources.DeleteSession
+import dev.kosmx.dropper.resources.FileRoute
+import dev.kosmx.dropper.resources.FindFile
+import dev.kosmx.dropper.resources.GetSessions
+import dev.kosmx.dropper.resources.GetUploads
+import dev.kosmx.dropper.resources.GetUploadsBySession
+import dev.kosmx.dropper.resources.InsertSession
+import dev.kosmx.dropper.resources.Session
+import dev.kosmx.dropper.resources.SessionByCode
+import dev.kosmx.dropper.resources.SessionById
+import dev.kosmx.dropper.resources.UpdateSession
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.resources.get
@@ -20,6 +34,12 @@ object AdminRouting: KoinComponent {
 
 @OptIn(ExperimentalUuidApi::class)
 fun Route.adminRouting() {
+
+    // this is to be able to test authentication without actually requesting anything.
+    get("ping") {
+        call.respond(HttpStatusCode.OK, "owo")
+    }
+
     route("admins") {
         get<AdminList> {
             call.respond(AdminRouting.access.getAdminClientList())

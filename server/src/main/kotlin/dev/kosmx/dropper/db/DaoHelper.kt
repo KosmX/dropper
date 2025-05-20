@@ -53,14 +53,15 @@ fun Iterable<ResultRow>.toUpload(): Iterable<Upload> = map { row ->
     val upload = Upload(
         id = row[UploadTable.id].value,
         files = emptyList(),
-        uploadDate = row[UploadTable.uploadDate].toJavaInstant().epochSecond
+        uploadDate = row[UploadTable.uploadDate]
     )
 
     val file = FileEntry(
         name = row[FileTable.filename],
-        fileDate = row[FileTable.fileDate].toJavaInstant().epochSecond,
+        fileDate = row[FileTable.fileDate],
         size = row[FileTable.fileSize],
-        id = row[FileTable.id].value.toKotlinUuid()
+        id = row[FileTable.id].value.toKotlinUuid(),
+        hash = row[FileTable.hash],
     )
 
     upload to file

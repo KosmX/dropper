@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <!-- Who had the idea of using XML??? Literally every other data format is better than XML, even YAML -->
+    <string name="login_done">booop</string>
+</resources>
