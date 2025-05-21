@@ -34,9 +34,9 @@ interface AdminAccess {
     /**
      * Adds a new admin client
      * @param name of client
-     * @return the newly created token
+     * @return the newly created Admin
      */
-    suspend fun addAdminClient(name: String): String
+    suspend fun addAdminClient(name: String): Admin
 
     suspend fun deleteAdminClient(token: String): Boolean
 }
@@ -84,12 +84,6 @@ interface SessionAccess {
      */
     suspend fun deleteSession(sessionID: Long): Boolean
 
-    /**
-     * Checks if the given session exists.
-     * If sessionID is given, first it verifies that the session key belongs to that ID.
-     * @return null if session is not valid or not registered
-     */
-    suspend fun verifySession(sessionSecret: ByteArray, sessionID: ByteArray? = null): ShareSession?
 }
 
 /**

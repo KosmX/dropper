@@ -2,4 +2,7 @@
 <resources>
     <!-- Who had the idea of using XML??? Literally every other data format is better than XML, even YAML -->
     <string name="login_done">booop</string>
+    <string name="nav_create">New share</string>
+    <string name="nav_sessions">Sessions</string>
+    <string name="nav_uploads">Uploads</string>
 </resources>

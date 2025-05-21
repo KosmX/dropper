@@ -20,7 +20,7 @@ import dev.kosmx.dropper.data.KtorDataAccess
 import dev.kosmx.dropper.data.LocalDataStore
 import dev.kosmx.dropper.data.net.provideHttpBaseClient
 import dropper.composeapp.generated.resources.Res
-import dropper.composeapp.generated.resources.login_done
+import dropper.composeapp.generated.resources.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.Job
@@ -50,7 +50,7 @@ fun AuthComponent(
         var job: Job? by remember { mutableStateOf(null) }
 
         fun setToken(server: String, t: String) {
-            val server = server.trimEnd('/') + "/admin/"
+            val server = server.trimEnd('/') + "/"
             if (job == null) {
                 job = MainScope().launch {
                     val ok = withContext(Util.IO) {
