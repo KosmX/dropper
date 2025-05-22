@@ -87,7 +87,7 @@ data class Upload @OptIn(ExperimentalUuidApi::class) constructor(
     /**
      * List of files in this upload. Must be non-empty
      */
-    val files: List<FileEntry>,
+    val files: Array<FileEntry>,
 
     /**
      * When did the upload happen (finished)
@@ -98,4 +98,26 @@ data class Upload @OptIn(ExperimentalUuidApi::class) constructor(
      * Session ID of uploader
      */
     val uploadSession: Long? = null
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || this::class != other::class) return false
+
+        other as Upload
+
+        if (id != other.id) return false
+        if (uploadDate != other.uploadDate) return false
+        if (uploadSession != other.uploadSession) return false
+        if (!files.contentEquals(other.files)) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + uploadDate.hashCode()
+        result = 31 * result + (uploadSession?.hashCode() ?: 0)
+        result = 31 * result + files.contentHashCode()
+        return result
+    }
+}

@@ -142,7 +142,7 @@ class DatabaseBackedView(
     override fun insertSession(newSession: ShareSession): Long = transaction {
         val id = SessionTable.insert {
             it[SessionTable.publicID] = newSession.publicID.decodeBase64Bytes()
-            it[secretString] = newSession.privateID!!.decodeBase64Bytes()
+            it[secretString] = newSession.privateID?.decodeBase64Bytes()
             it[name] = newSession.name
             it[expirationDate] = newSession.expirationDate.toJavaInstant().toKotlinInstant()
             it[allowMultipleFiles] = newSession.allowMultipleFiles
@@ -283,7 +283,7 @@ class DatabaseBackedView(
                     }
 
 
-                    return@transaction upload.copy(id = id.value, files = files)
+                    return@transaction upload.copy(id = id.value, files = files.toTypedArray())
                 }
 
             } catch (e: Throwable) {

@@ -2,8 +2,11 @@ package dev.kosmx.dropper.compose.createContent
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -20,7 +23,9 @@ fun DisplayLinkScreen(
     privateID: String,
     onBack: () -> Unit
 ) {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+    ) {
         Box(
             modifier = Modifier.width(500.dp).height(500.dp)
         ) {

@@ -2,7 +2,9 @@ package dev.kosmx.dropper.compose.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -11,11 +13,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.carousel.HorizontalMultiBrowseCarousel
-import androidx.compose.material3.carousel.rememberCarouselState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import dev.kosmx.dropper.Util
@@ -30,7 +29,6 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 
 
 @OptIn(ExperimentalTime::class, ExperimentalMaterial3Api::class)
@@ -52,7 +50,7 @@ fun SessionEntry(
         Text(stringResource(Res.string.session_files))
         HorizontalDivider()
 
-        var uploadsState by remember { mutableStateOf<List<Upload>?>(null)}
+        var uploadsState by remember { mutableStateOf<Array<Upload>?>(null)}
 
         LaunchedEffect(Unit) {
             launch {

@@ -52,7 +52,7 @@ fun Iterable<ResultRow>.toUpload(): Iterable<Upload> = map { row ->
 
     val upload = Upload(
         id = row[UploadTable.id].value,
-        files = emptyList(),
+        files = emptyArray(),
         uploadDate = row[UploadTable.uploadDate]
     )
 
@@ -67,6 +67,6 @@ fun Iterable<ResultRow>.toUpload(): Iterable<Upload> = map { row ->
     upload to file
 }.groupBy(keySelector = { it.first }, valueTransform = { it.second }).map { (upload, files) ->
     upload.copy(
-        files = files
+        files = files.toTypedArray()
     )
 }

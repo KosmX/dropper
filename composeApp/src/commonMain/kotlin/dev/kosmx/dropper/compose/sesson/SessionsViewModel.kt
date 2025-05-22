@@ -58,6 +58,10 @@ class SearchState(
             }
         }
     }
+
+    init {
+        loadMoreEntries()
+    }
 }
 
 @OptIn(FlowPreview::class)

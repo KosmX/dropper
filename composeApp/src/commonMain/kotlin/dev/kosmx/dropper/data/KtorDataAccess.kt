@@ -57,7 +57,7 @@ class KtorDataAccess(
         return adminClient.get(urlString = "ping")
     }
 
-    override suspend fun getAdminClientList(): List<Admin> = admins.get(AdminList()).body<List<Admin>>()
+    override suspend fun getAdminClientList(): Array<Admin> = admins.get(AdminList()).body<Array<Admin>>()
 
     override suspend fun addAdminClient(name: String): Admin = admins.post(AdminAdd(name)).body()
 
@@ -67,7 +67,7 @@ class KtorDataAccess(
         count: Int,
         page: Int,
         nameContains: String?
-    ): List<ShareSession> = sessions.get(GetSessions(count, page, nameContains)).body()
+    ): Array<ShareSession> = sessions.get(GetSessions(count, page, nameContains)).body()
 
     override suspend fun getSession(sessionId: ByteArray): ShareSession? = sessions.get(SessionById(sessionId.encodeBase64())).bodyOrNull()
 
@@ -94,16 +94,16 @@ class KtorDataAccess(
         sessionNameContains: String?,
         contentNameContains: String?,
         session: Long?
-    ): List<Upload> = uploads.get(GetUploads(count, page, sessionNameContains, contentNameContains, session)).body()
+    ): Array<Upload> = uploads.get(GetUploads(count, page, sessionNameContains, contentNameContains, session)).body()
 
-    override suspend fun getUploads(session: Long): List<Upload> = uploads.get(GetUploadsBySession(session)).body()
+    override suspend fun getUploads(session: Long): Array<Upload> = uploads.get(GetUploadsBySession(session)).body()
 
     override suspend fun getUpload(id: Long): Upload? = uploads.get(Session.Get(Session(id))).body()
 
     override suspend fun addUpload(
         session: Long?,
         upload: Upload,
-        content: List<FileInput>
+        content: Array<FileInput>
     ): Upload {
         TODO("Not yet implemented")
     }
@@ -113,7 +113,7 @@ class KtorDataAccess(
     override suspend fun findFile(
         filename: String?,
         extension: String?
-    ): List<Upload> = uploads.get(FindFile(filename)).body()
+    ): Array<Upload> = uploads.get(FindFile(filename)).body()
 
     override suspend fun deleteFile(id: Uuid): Boolean = uploads.post(FileRoute.Delete(FileRoute(id))).ok()
 

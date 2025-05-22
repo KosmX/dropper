@@ -5,10 +5,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import dev.kosmx.dropper.compose.createContent.AuthorizeShareViewModel
-import dev.kosmx.dropper.compose.createContent.CodeInput
-import dev.kosmx.dropper.compose.createContent.CreateNewShareViewModel
-import dev.kosmx.dropper.compose.createContent.NewSessionScreen
+import dev.kosmx.dropper.compose.createContent.*
+import dev.kosmx.dropper.compose.sesson.SessionListScreen
+import dev.kosmx.dropper.compose.upload.UploadListScreen
 import dropper.composeapp.generated.resources.Res
 import dropper.composeapp.generated.resources.qr_done
 import org.koin.compose.koinInject
@@ -55,11 +54,17 @@ fun NavGraph(
         }
 
         composable<Screen.Session> {
-            TODO()
+            val screen = it.toRoute<Screen.Session>()
+            SessionListScreen(
+                navController,
+                // TODO select entry based on path
+            )
         }
 
         composable<Screen.Upload> {
-            TODO()
+            UploadListScreen(
+                navController
+            )
         }
 
         composable<Screen.Settings> {
@@ -67,7 +72,10 @@ fun NavGraph(
         }
 
         composable<Screen.DisplayLink> {
-            TODO()
+            val screen = it.toRoute<Screen.DisplayLink>()
+            DisplayLinkScreen(publicID = screen.publicID, screen.privateID) {
+                navController.popBackStack()
+            }
         }
     }
 }

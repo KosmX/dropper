@@ -29,7 +29,7 @@ interface AdminAccess {
     /**
      * list of admin clients
      */
-    suspend fun getAdminClientList(): List<Admin>
+    suspend fun getAdminClientList(): Array<Admin>
 
     /**
      * Adds a new admin client
@@ -48,7 +48,7 @@ interface SessionAccess {
     /**
      * Sessions might blow up, we need proper paginating
      */
-    suspend fun getSessions(count: Int = 32, page: Int = 0, nameContains: String? = null): List<ShareSession>
+    suspend fun getSessions(count: Int = 32, page: Int = 0, nameContains: String? = null): Array<ShareSession>
 
     /**
      * Get a session by public ID
@@ -96,12 +96,12 @@ interface UploadAccess {
     /**
      * Get a list of upload entries with file list and everything. Can be filtered with non-null parameters
      */
-    suspend fun getUploads(count: Int = 32, page: Int = 0, sessionNameContains: String? = null, contentNameContains: String? = null, session: Long? = null): List<Upload>
+    suspend fun getUploads(count: Int = 32, page: Int = 0, sessionNameContains: String? = null, contentNameContains: String? = null, session: Long? = null): Array<Upload>
 
     /**
      * All uploads made by this session
      */
-    suspend fun getUploads(session: Long): List<Upload>
+    suspend fun getUploads(session: Long): Array<Upload>
 
     /**
      * retrieves an upload entry
@@ -115,7 +115,7 @@ interface UploadAccess {
      * @param content list of tmpfiles containing all the content. This function does **not** delete these
      * @return the fixed Upload instance (with correct ID and file sashes)
      */
-    suspend fun addUpload(session: Long?, upload: Upload, content: List<FileInput>): Upload
+    suspend fun addUpload(session: Long?, upload: Upload, content: Array<FileInput>): Upload
 
     /**
      * Delete an upload by its internal ID
@@ -128,7 +128,7 @@ interface UploadAccess {
     /**
      * Finds a file, returns with the corresponding upload
      */
-    suspend fun findFile(filename: String? = null, extension: String? = null): List<Upload>
+    suspend fun findFile(filename: String? = null, extension: String? = null): Array<Upload>
 
     /**
      * Deletes a single file from an upload. (idk why would anyone do this tbh)

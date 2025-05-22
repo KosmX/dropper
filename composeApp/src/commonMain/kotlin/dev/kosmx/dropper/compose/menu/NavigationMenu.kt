@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.DevicesOther
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
-import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -18,8 +17,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
-import androidx.window.core.layout.WindowWidthSizeClass
 import dev.kosmx.dropper.navigation.NavGraph
 import dev.kosmx.dropper.navigation.Screen
 import dropper.composeapp.generated.resources.Res
@@ -36,12 +33,12 @@ enum class NavigationEntries(
     val isSelected: (String) -> Boolean,
     val onClickRoute: () -> Screen,
 ) {
-    CREATE(Res.string.nav_create, Icons.Default.Add, { it == Screen.Create::class.qualifiedName || it == Screen.Authorize::class.qualifiedName }, { Screen.Create }),
+    CREATE(Res.string.nav_create, Icons.Default.Add, { it == Screen.Create::class.qualifiedName || it.contains(Screen.Authorize::class.qualifiedName!!) }, { Screen.Create }),
     SESSIONS(Res.string.nav_sessions, Icons.Default.DevicesOther, Screen.Session::class, { Screen.Session() }),
     UPLOADS(Res.string.nav_uploads, Icons.Default.CloudDone, Screen.Upload::class, { Screen.Upload() }),
 
     ;
-    constructor(title: StringResource, icon: ImageVector, klass: KClass<out Screen>, onClickRoute: () -> Screen): this(title, icon, { it == klass::class.qualifiedName }, onClickRoute)
+    constructor(title: StringResource, icon: ImageVector, klass: KClass<out Screen>, onClickRoute: () -> Screen): this(title, icon, { it.contains(klass.qualifiedName!!) }, onClickRoute)
 }
 
 @Composable
