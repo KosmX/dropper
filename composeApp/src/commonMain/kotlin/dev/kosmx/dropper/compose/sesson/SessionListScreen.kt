@@ -13,12 +13,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
+import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.layout.PaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,6 +33,7 @@ import dropper.composeapp.generated.resources.Res
 import dropper.composeapp.generated.resources.search
 import dropper.composeapp.generated.resources.session_list
 import dropper.composeapp.generated.resources.update_session
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
@@ -48,6 +51,7 @@ fun SessionListScreen(
     val selectedEntry by sessionsViewModel.selected.collectAsState()
 
     val scaffoldNavigator = rememberListDetailPaneScaffoldNavigator<ShareSession>()
+    val scope = rememberCoroutineScope()
 
     Column {
         Text(stringResource(Res.string.session_list), fontSize = 30.sp)
@@ -86,6 +90,10 @@ fun SessionListScreen(
                                     session = session,
                                     modifier = Modifier.clickable {
                                         sessionsViewModel.select(session)
+
+                                        scope.launch {
+                                            scaffoldNavigator.navigateTo(ListDetailPaneScaffoldRole.Detail, session)
+                                        }
                                     },
                                     backgroundColor =
                                         if (selectedEntry?.id == session.id) {
