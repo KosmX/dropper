@@ -1,28 +1,19 @@
 package dev.kosmx.dropper
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Button
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import dev.kosmx.dropper.compose.login.AuthComponent
-import org.jetbrains.compose.resources.painterResource
+import dev.kosmx.dropper.compose.menu.NavigationMenu
 import org.jetbrains.compose.ui.tooling.preview.Preview
-
-import dropper.composeapp.generated.resources.Res
-import dropper.composeapp.generated.resources.compose_multiplatform
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
         AuthComponent {
-            Text("A")
+            NavigationMenu(modifier = Modifier.safeDrawingPadding())
         }
     }
 }
