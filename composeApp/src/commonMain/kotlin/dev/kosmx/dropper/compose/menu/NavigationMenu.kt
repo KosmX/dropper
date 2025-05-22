@@ -33,15 +33,15 @@ import kotlin.reflect.KClass
 enum class NavigationEntries(
     val title: StringResource,
     val icon: ImageVector,
-    val isSelected: (Screen) -> Boolean,
+    val isSelected: (String) -> Boolean,
     val onClickRoute: () -> Screen,
 ) {
-    CREATE(Res.string.nav_create, Icons.Default.Add, { it is Screen.Create || it is Screen.Authorize }, { Screen.Create() }),
+    CREATE(Res.string.nav_create, Icons.Default.Add, { it == Screen.Create::class.qualifiedName || it == Screen.Authorize::class.qualifiedName }, { Screen.Create }),
     SESSIONS(Res.string.nav_sessions, Icons.Default.DevicesOther, Screen.Session::class, { Screen.Session() }),
     UPLOADS(Res.string.nav_uploads, Icons.Default.CloudDone, Screen.Upload::class, { Screen.Upload() }),
 
     ;
-    constructor(title: StringResource, icon: ImageVector, klass: KClass<out Screen>, onClickRoute: () -> Screen): this(title, icon, { klass.isInstance(it) }, onClickRoute)
+    constructor(title: StringResource, icon: ImageVector, klass: KClass<out Screen>, onClickRoute: () -> Screen): this(title, icon, { it == klass::class.qualifiedName }, onClickRoute)
 }
 
 @Composable
@@ -50,7 +50,7 @@ fun NavigationMenu(
     navController: NavHostController = rememberNavController()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.toRoute<Screen>()
+    val currentDestination = navBackStackEntry?.destination?.route
 
 
     val windowWidthSizeClass = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
@@ -80,12 +80,9 @@ fun NavigationMenu(
                 )
             }
         },
-        layoutType = if (windowWidthSizeClass == WindowWidthSizeClass.MEDIUM)
-            NavigationSuiteType.NavigationDrawer
-        else
-            NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
-                currentWindowAdaptiveInfo()
-            )
+        layoutType = NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
+            currentWindowAdaptiveInfo()
+        )
     ) {
         NavGraph(navController)
     }

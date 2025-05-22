@@ -20,6 +20,8 @@ class KtorDataAccess(
     val adminClient = client.config {
         defaultRequest {
             url("admin/")
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
         }
     }
     val admins = adminClient.config {
@@ -71,7 +73,7 @@ class KtorDataAccess(
 
     override suspend fun getSession(sessionId: Long): ShareSession? = sessions.get(SessionByCode(sessionId)).bodyOrNull()
 
-    override suspend fun updateSession(session: ShareSession): Boolean = sessions.post(UpdateSession()) {
+    override suspend fun updateSession(session: ShareSession): Boolean = sessions.post(UpdateSession) {
         this.setBody(session)
     }.ok()
 
@@ -79,7 +81,7 @@ class KtorDataAccess(
         setBody(newSession)
     }.body()
 
-    override suspend fun insertSession(newSession: ShareSession): Long = sessions.post(InsertSession()) {
+    override suspend fun insertSession(newSession: ShareSession): Long = sessions.post(InsertSession) {
         setBody(newSession)
     }.body()
 

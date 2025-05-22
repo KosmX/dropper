@@ -1,12 +1,14 @@
 package dev.kosmx.dropper.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import androidx.savedstate.read
+import dev.kosmx.dropper.compose.createContent.AuthorizeShareViewModel
+import dev.kosmx.dropper.compose.createContent.CreateNewShareViewModel
+import dev.kosmx.dropper.compose.createContent.NewSessionScreen
+import org.koin.compose.koinInject
 
 @Composable
 fun NavGraph(
@@ -14,15 +16,27 @@ fun NavGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Create(),
+        startDestination = Screen.Create,
+        typeMap = mapOf()
     ) {
         composable<Screen.Create> {
-            TODO()
+            NewSessionScreen(
+                newSessionModel = CreateNewShareViewModel(
+                    nav = navController,
+                    data = koinInject()
+                )
+            )
         }
 
         composable<Screen.Authorize> { entry ->
             val screen: Screen.Authorize = entry.toRoute()
-            TODO()
+            NewSessionScreen(
+                newSessionModel = AuthorizeShareViewModel(
+                    id = screen.id,
+                    data = koinInject(),
+                    nav = navController
+                )
+            )
         }
 
         composable<Screen.Session> {
@@ -33,7 +47,11 @@ fun NavGraph(
             TODO()
         }
 
-        composable<Screen.Session> {
+        composable<Screen.Settings> {
+            TODO()
+        }
+
+        composable<Screen.DisplayLink> {
             TODO()
         }
     }

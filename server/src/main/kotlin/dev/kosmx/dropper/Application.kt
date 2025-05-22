@@ -9,6 +9,7 @@ import dev.kosmx.dropper.db.AdminTable
 import dev.kosmx.dropper.db.DatabaseBackedView
 import dev.kosmx.dropper.db.DatabaseLoader
 import dev.kosmx.dropper.routing.admin.adminRouting
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -85,7 +86,7 @@ private fun Application.module() {
     routing {
 
         install(ContentNegotiation) {
-
+            json()
         }
 
         route("/admin") {

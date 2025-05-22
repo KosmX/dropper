@@ -1,10 +1,10 @@
 package dev.kosmx.dropper.data.net
 
 import io.ktor.client.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.resources.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
@@ -35,5 +35,14 @@ fun provideHttpBaseClient(server: String, token: String) = platformClient().conf
     }
     defaultRequest {
         url(server)
+    }
+
+    install(HttpTimeout) {
+        requestTimeoutMillis = 1000
+    }
+
+    install(HttpRequestRetry) {
+        retryOnServerErrors(maxRetries = 5)
+        exponentialDelay()
     }
 }

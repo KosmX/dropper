@@ -15,13 +15,13 @@ class SessionById(val id: String) {
 class SessionByCode(val id: Long)
 
 @Resource("update")
-class UpdateSession // parameter in content
+object UpdateSession // parameter in content
 
 @Resource("create")
-class CreateSession // parameter in content
+object CreateSession // parameter in content
 
 @Resource("insert")
-class InsertSession
+object InsertSession
 
 @Resource("delete")
 class DeleteSession(val id: Long)

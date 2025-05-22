@@ -21,9 +21,11 @@ import dev.kosmx.dropper.resources.UpdateSession
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.resources.get
+import io.ktor.server.resources.post
 import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import io.ktor.server.routing.post
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
+import io.ktor.server.routing.route
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.uuid.ExperimentalUuidApi

@@ -3,6 +3,7 @@ package dev.kosmx.dropper.compose.createContent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -57,11 +59,12 @@ fun NewSessionScreen(
 
     Column(
         modifier = modifier.padding(8.dp)
-            .fillMaxWidth()
+            .width(500.dp)
             .scrollable(
                 scrollState,
                 orientation = Orientation.Horizontal
-            )
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             stringResource(if (createMode) Res.string.new_create_new else Res.string.new_authorize_new),
@@ -70,7 +73,7 @@ fun NewSessionScreen(
         HorizontalDivider()
 
         OutlinedTextField(
-            modifier = modifier.width(TextFieldDefaults.MinWidth).padding(8.dp),
+            modifier = modifier.fillMaxWidth().padding(8.dp),
             value = sessionState.name ?: "",
             label = { Text(stringResource(Res.string.new_name)) },
             onValueChange = {
@@ -84,7 +87,7 @@ fun NewSessionScreen(
         HorizontalDivider()
 
         OutlinedTextField(
-            modifier = modifier.width(TextFieldDefaults.MinWidth).padding(8.dp),
+            modifier = modifier.fillMaxWidth().padding(8.dp),
             value = timeLength,
             label = { Text(stringResource(Res.string.new_timeout)) },
             onValueChange = {
@@ -100,7 +103,9 @@ fun NewSessionScreen(
 
         val units = listOf(DurationUnit.MINUTES, DurationUnit.HOURS, DurationUnit.DAYS)
 
-        SingleChoiceSegmentedButtonRow {
+        SingleChoiceSegmentedButtonRow (
+            modifier = modifier.fillMaxWidth().padding(8.dp)
+        ) {
             units.forEachIndexed { index, unit ->
                 SegmentedButton(
                     shape = SegmentedButtonDefaults.itemShape(
@@ -117,7 +122,7 @@ fun NewSessionScreen(
         HorizontalDivider()
 
         SingleChoiceSegmentedButtonRow(
-            modifier = modifier.width(TextFieldDefaults.MinWidth).padding(8.dp)
+            modifier = modifier.fillMaxWidth().padding(8.dp)
         ) {
             val size = 3
             SegmentedButton(
@@ -156,7 +161,7 @@ fun NewSessionScreen(
         HorizontalDivider()
 
         Button(
-            modifier = Modifier.width(TextFieldDefaults.MinWidth).padding(8.dp),
+            modifier = Modifier.fillMaxWidth().padding(8.dp),
             onClick = {
                 newSessionModel.createSession(
                     sessionState.copy(

@@ -1,10 +1,11 @@
 package dev.kosmx.dropper.compose.createContent
 
 import androidx.lifecycle.ViewModel
-import androidx.navigation.NavGraph
+import androidx.navigation.NavController
 import dev.kosmx.dropper.Util
 import dev.kosmx.dropper.data.DataAccess
 import dev.kosmx.dropper.data.ShareSession
+import dev.kosmx.dropper.navigation.Screen
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +15,9 @@ import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
 import kotlin.time.ExperimentalTime
 
-abstract class CreateSessionViewModel: ViewModel() {
+abstract class CreateSessionViewModel(
+    protected val nav: NavController,
+): ViewModel() {
 
     /**
      * The initial Share session, with some data.
@@ -47,51 +50,54 @@ abstract class CreateSessionViewModel: ViewModel() {
     /**
      * Cancel the creation action explicitly (step back)
      */
-    abstract fun cancel()
+    open fun cancel() {
+        nav.popBackStack()
+    }
 }
 
 /**
  * Create a brand-new view session
  */
 class CreateNewShareViewModel(
-    val nav: NavGraph,
+    nav: NavController,
     private val data: DataAccess,
-): CreateSessionViewModel() {
+): CreateSessionViewModel(nav) {
     @OptIn(ExperimentalTime::class)
 
     override fun createSession(session: ShareSession) {
-        if (actualIsLoading.value) return
         MainScope().launch {
+            if (actualIsLoading.value) return@launch
             actualIsLoading.value = true
             val result: ShareSession = withContext(Util.IO) {
                 data.createSession(session)
             }
 
-            TODO("Display new session code")
+            nav.navigate(Screen.DisplayLink(result))
         }
     }
-
-    override fun cancel() {
-        // TODO
-    }
-
     override val createMode: Boolean
         get() = true
 }
 
 class AuthorizeShareViewModel(
-    val id: String,
-    val navGraph: NavGraph
-): CreateSessionViewModel() {
+    val id: Long,
+    private val data: DataAccess,
+    nav: NavController
+): CreateSessionViewModel(nav) {
     override val createMode: Boolean
         get() = false
 
     override fun createSession(session: ShareSession) {
-        TODO("Not yet implemented")
-    }
+        MainScope().launch {
+            if (actualIsLoading.value) return@launch
+            actualIsLoading.value = true
 
-    override fun cancel() {
-        TODO("Not yet implemented")
+            val result = withContext(Util.IO) {
+                data.insertSession(session)
+            }
+
+            nav.navigate(Screen.Session(result))
+        }
     }
 }
 
