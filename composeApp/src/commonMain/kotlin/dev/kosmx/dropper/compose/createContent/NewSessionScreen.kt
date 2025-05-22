@@ -3,17 +3,16 @@ package dev.kosmx.dropper.compose.createContent
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,7 +31,7 @@ import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
-enum class DurationUnit(val convertInt: (Int) -> Duration) {
+private enum class DurationUnit(val convertInt: (Int) -> Duration) {
     SECONDS({ it.seconds }),
     MINUTES({ it.minutes }),
     HOURS({ it.hours }),
@@ -59,11 +58,7 @@ fun NewSessionScreen(
 
     Column(
         modifier = modifier.padding(8.dp)
-            .width(500.dp)
-            .scrollable(
-                scrollState,
-                orientation = Orientation.Horizontal
-            ),
+            .width(500.dp).verticalScroll(scrollState),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -71,6 +66,23 @@ fun NewSessionScreen(
             fontSize = 24.sp
         )
         HorizontalDivider()
+
+        if (createMode) {
+            Button(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                onClick = {
+                    newSessionModel.navigate()
+                }
+            ) {
+                Text(stringResource(Res.string.new_input))
+            }
+        } else {
+            Text(
+                modifier = Modifier.fillMaxWidth(),
+                fontSize = 12.sp,
+                text = sessionState.publicID
+            )
+        }
 
         OutlinedTextField(
             modifier = modifier.fillMaxWidth().padding(8.dp),

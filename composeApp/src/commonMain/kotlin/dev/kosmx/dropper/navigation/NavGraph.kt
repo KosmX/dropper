@@ -6,8 +6,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import dev.kosmx.dropper.compose.createContent.AuthorizeShareViewModel
+import dev.kosmx.dropper.compose.createContent.CodeInput
 import dev.kosmx.dropper.compose.createContent.CreateNewShareViewModel
 import dev.kosmx.dropper.compose.createContent.NewSessionScreen
+import dropper.composeapp.generated.resources.Res
+import dropper.composeapp.generated.resources.qr_done
 import org.koin.compose.koinInject
 
 @Composable
@@ -30,13 +33,25 @@ fun NavGraph(
 
         composable<Screen.Authorize> { entry ->
             val screen: Screen.Authorize = entry.toRoute()
-            NewSessionScreen(
-                newSessionModel = AuthorizeShareViewModel(
-                    id = screen.id,
-                    data = koinInject(),
-                    nav = navController
+            if (screen.id == null) {
+                CodeInput(
+                    onCodeInput = { input ->
+
+                        navController.navigate(Screen.Authorize(input)) {
+                            popUpTo<Screen.Create>()
+                        }
+                    },
+                    doneButtonText = Res.string.qr_done
                 )
-            )
+            } else {
+                NewSessionScreen(
+                    newSessionModel = AuthorizeShareViewModel(
+                        id = screen.id,
+                        data = koinInject(),
+                        nav = navController
+                    )
+                )
+            }
         }
 
         composable<Screen.Session> {

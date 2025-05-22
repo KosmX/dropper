@@ -64,6 +64,13 @@ data class FileEntry @OptIn(ExperimentalUuidApi::class) constructor(
         return result
     }
 
+    fun sizeAsText(): String = when {
+        size < 4096 -> "$size B"
+        size < 1024 * 4096 -> "${size / 1024} K"
+        size < 1024 * 4096 * 1024 -> "${size / 1024 / 1024} M"
+        size < 1024 * 1024 * 4096 * 1024 -> "${size / 1024 / 1024 / 1024} G"
+        else -> "${size / 1024 / 1024 / 1024 / 1024} T"
+    }
 }
 
 /**

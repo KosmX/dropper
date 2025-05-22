@@ -53,6 +53,8 @@ abstract class CreateSessionViewModel(
     open fun cancel() {
         nav.popBackStack()
     }
+
+    abstract fun navigate()
 }
 
 /**
@@ -75,17 +77,25 @@ class CreateNewShareViewModel(
             nav.navigate(Screen.DisplayLink(result))
         }
     }
+
+    override fun navigate() {
+        nav.navigate(Screen.Authorize(null))
+    }
+
     override val createMode: Boolean
         get() = true
 }
 
 class AuthorizeShareViewModel(
-    val id: Long,
+    val id: String,
     private val data: DataAccess,
     nav: NavController
 ): CreateSessionViewModel(nav) {
     override val createMode: Boolean
         get() = false
+
+    override val initialShareSession: ShareSession
+        get() = super.initialShareSession.copy(publicID = id)
 
     override fun createSession(session: ShareSession) {
         MainScope().launch {
@@ -93,11 +103,15 @@ class AuthorizeShareViewModel(
             actualIsLoading.value = true
 
             val result = withContext(Util.IO) {
-                data.insertSession(session)
+                data.insertSession(session.copy(publicID = id))
             }
 
             nav.navigate(Screen.Session(result))
         }
+    }
+
+    override fun navigate() {
+        throw IllegalStateException()
     }
 }
 

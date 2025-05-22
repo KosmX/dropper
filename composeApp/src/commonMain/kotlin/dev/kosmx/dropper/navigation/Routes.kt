@@ -13,7 +13,7 @@ sealed class Screen() {
     object Create: Screen()
 
     @Serializable
-    class Authorize(val id: Long): Screen()
+    class Authorize(val id: String?): Screen()
 
     @Serializable
     data class Session(val session: Long? = null): Screen()
@@ -28,4 +28,7 @@ sealed class Screen() {
     data class DisplayLink(val publicID: String, val privateID: String): Screen() {
         constructor(session: ShareSession): this(session.publicID, session.privateID!!)
     }
+
+    @Serializable
+    data class Update(val id: Long): Screen()
 }

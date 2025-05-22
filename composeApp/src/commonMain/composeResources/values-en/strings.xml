@@ -14,4 +14,12 @@
     <string name="new_delreupload">Overwrite</string>
     <string name="new_done_create">Create</string>
     <string name="new_done_authorize">Authorize</string>
+    <string name="qr_token_input">Token</string>
+    <string name="qr_done">Review and Authorize</string>
+    <string name="new_input">Review and Authorize</string>
+    <string name="qr_back">Back</string>
+    <string name="search">Search</string>
+    <string name="update_session">Update Session</string>
+    <string name="session_files">Files:</string>
+    <string name="upload">Upload</string>
 </resources>
