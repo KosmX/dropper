@@ -71,3 +71,4 @@ probably server logs, emergency lockdown and other utilities will be accessible 
 - [Exposed](https://www.jetbrains.com/exposed/) for the server, an ORM lib I'm already familiar
 - [PostgreSQL](https://www.postgresql.org/) for the database on the server.
 - HTTP+CSS(+JS) for the simple client.
+- QR-kit

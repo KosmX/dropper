@@ -1,12 +1,12 @@
 package dev.kosmx.dropper.compose.createContent
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import dev.kosmx.dropper.Util
 import dev.kosmx.dropper.data.DataAccess
 import dev.kosmx.dropper.data.ShareSession
 import dev.kosmx.dropper.navigation.Screen
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -27,7 +27,7 @@ abstract class CreateSessionViewModel(
         get() = ShareSession(
             id = 0,
             publicID = "uninitialized",
-            name = "unnamed",
+            name = null,
             expirationDateString = (Clock.System.now() + 1.days).toString()
         )
 
@@ -67,7 +67,7 @@ class CreateNewShareViewModel(
     @OptIn(ExperimentalTime::class)
 
     override fun createSession(session: ShareSession) {
-        MainScope().launch {
+        viewModelScope.launch {
             if (actualIsLoading.value) return@launch
             actualIsLoading.value = true
             val result: ShareSession = withContext(Util.IO) {
@@ -98,7 +98,7 @@ class AuthorizeShareViewModel(
         get() = super.initialShareSession.copy(publicID = id)
 
     override fun createSession(session: ShareSession) {
-        MainScope().launch {
+        viewModelScope.launch {
             if (actualIsLoading.value) return@launch
             actualIsLoading.value = true
 
