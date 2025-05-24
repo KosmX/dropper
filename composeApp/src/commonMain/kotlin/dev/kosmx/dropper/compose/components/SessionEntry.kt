@@ -56,7 +56,7 @@ fun SessionEntry(
             launch {
                 val results = withContext(Util.IO) { data.getUploads(session.id) }
 
-                uploadsState = results
+                uploadsState = results.toTypedArray()
             }
         }
 

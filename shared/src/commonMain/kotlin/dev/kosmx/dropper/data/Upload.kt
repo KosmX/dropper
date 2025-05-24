@@ -77,6 +77,7 @@ data class FileEntry @OptIn(ExperimentalUuidApi::class) constructor(
  * Represents one upload
  * it may contain multiple files, it has an owner session (who uploaded it)
  */
+@Serializable
 data class Upload @OptIn(ExperimentalUuidApi::class) constructor(
 
     /**
