@@ -53,7 +53,7 @@ fun SessionCard(
                     )
                 )
 
-                VerticalDivider()
+                Spacer(Modifier.width(30.dp))
 
                 val status: String = when {
                     session.expirationDate < Clock.System.now() -> "Expired"

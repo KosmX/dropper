@@ -16,11 +16,7 @@ import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffold
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
 import androidx.compose.material3.adaptive.layout.PaneScaffoldDirective
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -112,14 +108,19 @@ fun SessionListScreen(
                 AnimatedPane {
                     if (selectedEntry != null) {
 
-                        SessionEntry(selectedEntry!!, nav)
-
-                        Button(
-                            onClick = {
-                                nav.navigate(Screen.Update(selectedEntry!!.id))
-                            }
+                        Column(
+                            modifier = Modifier.padding(8.dp)
                         ) {
-                            Text(stringResource(Res.string.update_session))
+
+                            SessionEntry(selectedEntry!!, nav)
+
+                            Button(
+                                onClick = {
+                                    nav.navigate(Screen.Update(selectedEntry!!.id))
+                                }
+                            ) {
+                                Text(stringResource(Res.string.update_session))
+                            }
                         }
                     }
                 }
